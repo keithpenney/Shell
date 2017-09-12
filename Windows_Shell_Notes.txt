@@ -1,0 +1,159 @@
+Windows Shell Scripting / Command Line Notes
+
+General Notes:
+    Whitespace is important!  Do not add/remove any spaces for clarity; this will change the content.
+    Sometimes case sensitive.
+        function names and environment variables are case INsensitive.
+        function parameters can be case Sensitive.
+    If "Quick Edit Mode" is enabled (right click on command prompt title bar, select Properties), paste copied text with a right-click
+    You can drag and drop batch files (.bat) right into the command prommpt window
+
+Symbols:
+    @   Any line that begins with @ doesn't echo the command itself.
+    %   Enclose an environment variable within %% to retrieve its value.
+        %n (where n = 1, 2, 3... 9) represents the nth arg passed to the command
+        %*   returns a string of all arguments from 1 onward
+    >   Redirect.  Send the output of one function/process to a file.  Overwrites by default.
+        e.g. Echo Some text to file > C:\filename.txt
+    >>  Redirect append.  Send the output of one function/process to a file.  Append by default.
+    2>  Redirect error output.  Same as > but for Standard Error, not Standard Output
+    ^   Escape character.  Treats following character as just a character; no evaluation/interpretation.
+    *   Wildcard.  In searches/file operators, you can often use * as a character/string wildcard.
+    Nul A trash can where you can direct output that you want to suppress, e.g (cd ThisDontExist 2> errortext.txt)
+
+Comments:
+    rem anything following rem (remark) is a comment and is ignored.  Works in batch files and cmd.
+    :: a double colon also functions as a comment
+    rem and :: differ by a linefeed character
+
+Help
+    FUNCTION_NAME /?
+        Read documentation for function FUNCTION_NAME
+
+Core functions:
+    cd      change directory
+    dir     see contents of directory
+    echo    (see below)
+    del     delete a file
+    copy    copy file1 file2 (copies file1 to file2)
+            Weird.  When copy encounters an error, it outputs to Standard Out, not Standard Error
+
+ErrorLevel
+    Most commands return an errorlevel (0 means successful, 1 or > means error of some sort)
+    Check for success of previous command with
+        If errorlevel 1 echo Something bad happened.
+    Show current errorlevel with
+        Echo %errorlevel%
+
+Echo
+    Determine whether echo is on or off. (echo)
+    Turn command echo on or off. (echo on)
+    Print text to screen. (echo some text)
+    Print a blank line (echo.)
+    Print text to a file (echo the quick brown fox > C:\sometextfile.txt)
+
+Environment Variables (envars)
+
+    System-related environment variables are stored in:
+        HKEY_LOCAL_MACHINE\SYSTEM\...\Environment
+    User-related envars are stored in:
+        HKEY_CURRENT_USER\Environment
+
+    SetLocal/EndLocal
+        Place these as wrappers around the scope of the envar.
+        Otherwise, they will default to global and potentially
+        conflict with system envars.
+
+    %VAR_NAME%      use the variable's value instead of the variable object itself
+        e.g. echo %VAR_NAME%
+
+Set
+    set /?  for help
+    set
+        lists all environment variables
+
+    set VAR_NAME
+        prints the value of VAR_NAME to the screen
+
+
+    set V           displays all variables starting with character "V"
+
+    set VAR_NAME=SOME_STUFF_HERE
+        set VAR_NAME to SOME_STUFF_HERE (can be string, integer, float, etc)
+        only applies to current command sesion
+
+    set VAR_NAME=
+        delete (unset) the variable VAR_NAME
+        sometimes called "clobbering"
+
+    setx VAR_NAME=SOME_STUFF_HERE
+        permanently set VAR_NAME to SOME_STUFF_HERE
+
+    setx VAR_NAME=%VAR_NAME% SOME_STUFF_HERE
+        permanently append SOME_STUFF_HERE to VAR_NAME
+
+    set VAR_NAME=cd ../
+        set VAR_NAME to a command. Then run the command with %VAR_NAME%
+
+    set /a
+        Arithmetic flag.  Evaluates the following expression.  Only works with ints.
+        set /a "(22<<2)%3+9"        Evaluates to 10; prints to Standard Out
+        set /a VarName="~16"        Evaluates to -17 (two's complement negation); stores value in VarName
+        set /a VarName*=2           Multiplies the value of VarName by 2, then assigns VarName to the new value.
+
+If
+    If /?   for help
+    Simplest syntax:
+        If condition codeToExecute
+    If-else syntax:
+        If condition (codeToExecute) else (codeIfNotCondition)
+    Or multiline:
+        If condition (
+            codeToExecute
+        ) Else (
+            codeIfNotCondition
+        )
+    Boolean operators:
+        EQU     equal
+        NEQ     not equal
+        LSS     less than
+        LEQ     less than or equal
+        GTR     greater than
+        GEQ     greater than or equal
+
+    Application - Determine if filename exists
+        If exist filename echo true
+        If not exist filename echo doesn't exist bro^!
+        If exist *.txt echo There's some text here.
+
+Labels/GoTo
+    Labels are preceded by a colon :
+        :mylabel
+    Can use spaces, but no commas, semicolons, periods, etc.
+    Scripting engine only reads first 8 characters, so :thislabel1 and :thislabel2 are treated as the same and can cause errors
+    GoTo syntax
+        GoTo :mylabel
+
+Command Arguments:
+    %*      A string including all arguments (space-separated)
+    %0      The command/filename called
+    %1      The first argument
+    %n      (where n is int between 1 and 9) the nth argument
+
+    shift       Shifts the values of arguments "downwards" (e.g. puts val of %1 into %0, val of %2 into %1, etc.)
+    shift /n    Start shifting at the nth argument (n can be 0 to 8)
+                Note!  Shift does not affect the value of %*
+
+Extra Functions:
+    Net     Enables a lot of network-related activity.
+
+=========================================== PowerShell ================================================================
+
+General differences:
+    Environment variables don't work the same.  "Set" is different.
+
+Handling variables (different than environment variables):
+    $var = "Anything you want"
+    $mynum = 4
+    $var -replace "want", "need"
+

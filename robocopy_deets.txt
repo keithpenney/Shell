@@ -1,0 +1,12 @@
+::robocopy source destination [file [file]...] [options]
+::'file' can be names or wildcards
+::
+:: Options:
+:: /S       copy subdirectories (excluding empty directories)
+:: /E       copy subdirectories (including empty directories)
+:: /B       copy files in Backup mode.
+:: /R:n     number (n) of retries on failed copies.  Default 1 million.
+:: /MIR     If file exists in destination, only copy if source file is newer.
+
+robocopy "C:\Users\kpenney\Desktop\Keith Penney\Java" "C:\Users\kpenney\Desktop\Keith Penney\Shell\robocopy\dir1" /mir /log:"C:\Users\kpenney\backup_log.txt"
+pause
