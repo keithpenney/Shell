@@ -147,6 +147,7 @@ Command Arguments:
 Extra Functions:
     Net     Enables a lot of network-related activity.
 
+    Systeminfo  Provides a ton of info about the system hardware and current session
 =========================================== PowerShell ================================================================
 
 General differences:
