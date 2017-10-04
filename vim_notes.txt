@@ -1,0 +1,143 @@
+VIM (VI) Text Editor Commands
+
+(vimtutor lessons 1-5. Start at 6)
+
+--- NAVIGATE ---
+
+hjkl = <v^> (same as arrow keys)
+
+0 = move cursor to beginning of line
+
+$ = move cursor to the end of a line
+
+w = move cursor forward 1 word
+
+nw = (where n is an integer) move cursor forward n words
+
+G = "Go" (maybe); moves cursor to end of file
+
+gg = moves cursor to beginning of file
+
+nG = :n = move cursor to line n
+
+:w = 'writeout' (save file)
+
+:w newfile = 'writeout' to file name 'newfile'
+
+:q = quit (exit)
+
+:q = force quit
+
+:wq = writeout and quit (quit and save)
+
+--- SEARCH ---
+
+/thing = search file for "thing" and places cursor at the first instance of "thing"
+
+n = search again (move to next instance)
+    can also type / + <ENTER>
+
+N = search again (move to previous instance)
+    can also type ? + <ENTER>
+
+:set ic = <set option> "ignore case" (case insensitive)
+
+:set noic = <set option> turn off "ignore case" (case sensitive)
+
+:set hls = <set option> "highlight search"
+
+:set nohls = <set option> turn off "highlight search"
+
+--- DELETE ---
+
+x = delete character under the cursor
+
+dw = delete word at the cursor position
+
+de = same as dw as far as I can tell.
+
+n dd = delete n lines starting at the current cursor position
+
+n dw = delete n words to the right of the current cursor position
+
+dnw = same as n dw
+
+
+--- EDITING ---
+
+**Note!  Anything that is deleted is stored in the Vim register and can be pasted.
+**In other words, delete works like cut.
+
+v = enter visual select mode
+
+y = "yank" (copy text hightlighted with v)
+    yw = copy a single word
+    yy = y$ = copy a single line
+
+p = "paste"; past text copied with y
+
+u = undo last command
+
+U = restore current line
+
+r 'char' = replace a single character with 'char' (e.g. re replaces the character with 'e')
+
+:s/oldword/newword = replace first occurrence of "oldword" in current line with "newword"
+
+	append /g ("global") to replace every occurrence in the current line
+
+:%s/oldword/newword/g = replace every occurrence in the whole file
+
+:#,#s/oldword/newword/g = replace every occurrence between the given line #'s
+
+	append "c" to ask for confirmation before replacing words.
+
+:r = retrieve.  Inserts text from a filename or location.  e.g. :r "filename"
+
+	You can also pipe with this.
+	e.g. :r !ls
+
+--- MULTI-LINE COPY/PASTE ---
+
+Press v to enter visual highlight mode
+
+Press : (you'll see :'<,'> at the bottom left)
+
+Press w "filename" (you'll see :'<,'>w "filename")
+
+Press ENTER to write highlighted text to "filename"
+
+Move the cursor to the destination line
+
+Press :r "filename" to write the contents of "filename" at that cursor position.   Note :r is for "retrieve"
+
+--- INSERT MODE ---
+
+i = enter insert mode at cursor position
+
+A = 'append'; moves cursor one position to the right then enters insert mode
+
+o = insert blank line BELOW cursor, then move cursor to the new blank line and enter insert mode
+
+O = insert blank line ABOVE cursor, then move cursor to the new blank line and enter insert mode
+
+R = goes into replace mode (like insert, but overwrites characters).
+
+cw = ce = "change" to end of word (deletes until end of word then enters insert mode)
+
+c$ = "change" to end of line.
+
+--- CODING TOOLS ---
+
+% = parenthesis matching; highlight a (, {, or [ and hit % to highlight the matching ), }, or ]
+
+--- EXTERNAL COMMANDS ---
+
+: = accept a long command (hit enter to execute)
+
+:!"command" = call an external terminal command
+
+:"char" <CTRL> + D = shows all external commands that start with the char string "char"
+    type <TAB> to complete the command in alphabetical order
+
+
