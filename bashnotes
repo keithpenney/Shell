@@ -1,0 +1,10 @@
+BASH command notes:
+
+find:	find a file with lots of parameters
+	e.g.
+		find -name "filename"
+
+`` or $():	use result of contents of `` as argument
+	e.g.
+		cd `find -name "filename"`
+		cd $(find -name "filename")
