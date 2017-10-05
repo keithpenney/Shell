@@ -1,0 +1,121 @@
+Linux BASH Scripting Notes:
+
+General Notes:
+    Case insensitive
+    Help:
+        man [item/file/function name]
+    Some whitespace sensitivity
+    Tries to interpret everything as a command
+    Concatenates stuff by default; watch out!
+
+Symbols and Characters:
+    #           A single-line comment
+    #!          A shebang script
+    $           Get the value of a variable
+    ${}         Get the value of an expression within the braces (e.g. ${array[2]}
+    =           Variable assignment
+    $N          The Nth argument passed to a script
+    $@          All arguments passed to a script
+    $#          The number of arguments passed to a script
+    |           Piping
+
+
+Make script executable:
+    chmod +x myScript.sh
+
+Shebang:
+
+Execute Shell Commands with BASH:
+    Some commands (like 'echo') will take almost any argument completely unevaluated.
+    If we want to evaluate an argument (e.g. execute a shell command and use the output), we can wrap the command
+    in backticks `` (under the tilde ~).
+
+    echo `uname -o`     Evaluates uname -o and echos the result to StdOut
+
+Reserved Keywords:
+    declare [-flag] var Declare variables and give them attributes.
+                        -a: make var an indexed array; -A: make var an associative array
+                        -i: make var an integer; -l: make var all lower-case; -u: make var all upper-case
+    exec [command]      If a command is supplied, executes the command in a separate shell process.
+                        If no command is supplied, redirections can be used to affect the current shell environment
+    let name=val        Allows arithmetic to be performed on variables.
+    local               Make a variable assignment local rather than global (as is default)
+    $REPLY              The default variable for user input from 'read'
+
+Printing/Piping/Redirection:
+    echo [any old thing]        Prints text to StdOut.  Ignores quotes (single or double)
+
+Variables:
+    Variables are global by default.  Use the 'local' keyword to define a local variable within
+    a narrowed scope (e.g. inside a function or loop).
+
+    myVar="A string"            Assign a value to a string variable
+    $myVar                      Retrieve the value of a variable
+
+Arrays:
+    Define an array:
+        someArray=('Thing 1' 'Thing 2' 'Thing 3')
+
+    Access array members:
+        ${arrayName[n]}         Where 'n' is index integer >0
+
+    Get length of array:
+        ${#arrayName[@]}        Isn't that a god-awful syntax?
+                                Let's break it down:
+                                $   Get the value of something
+                                {}  Contains the expression to evaluate for the value
+                                #   Get a length
+                                [@] Get all elements
+
+Built-In Functions:
+
+    echo                        Print to Standard Out (StdOut)
+                                -e: enable escape sequences; -n: suppress trailing newline;
+    chmod                       Change a file's mode bits (read/write/execute)
+    clear                       Clear the screen.
+    ls                          List the contents of the current directory
+                                -l : 'long' format.  More detail.
+    read [var]                  Get user input in string form. Stores in 'var' if provided, else in $REPLY
+                                -a: read as space-delimited array; 
+    seq [begin] [end]           Return a sequence of numbers from 'begin' to 'end'
+    sudo                        Do as superuser (requires password)
+    tar                         Archive (zip) or unarchive (unzip) a file.
+                                -z: zip; -c: create; -a: append
+    uname                       Print system information
+                                -o: OS; -m: machine; -a: all
+    which filename              Returns pathnames of the files by searching PATH
+    whoami                      Returns the current username
+
+Loops:
+    For-loop:
+        We can loop over a sequence of integers in the following way.
+        Incremental Sytanx:
+            for ((i=0; i<10; i++)); do
+                # do stuff with integer i
+            done
+            # both sets of parentheses seem to be necessary
+
+        We can loop over the elements of an iterable in the following way.
+        Iterable Syntax:
+            for item in iterable; do
+                # do stuff with 'item'
+            done
+
+Signals and Traps:
+    When a C program terminates, it typically returns an integer indicating something about how/why it terminated.
+    Returning zero '0' means all is well.  A full list of values can be obtained via:
+        man 7 signal
+    Name        Value       Comment
+    ----        -----       -------
+    SIGNHUP     1           Hangup detected on controlling terminal or death of controlling process
+    SIGINT      2           Interrupt from keyboard
+    SIGQUIT     3           Quit from keyboard
+    SIGFPE      8           Floating point exception
+    SIGKILL     9           Kill signal
+    SIGSEGV     11          Segmentation fault: invalid memory reference
+    SIGPIPE     13          Broken pipe: write to pipe with no reader
+
+    A trap is a built-in command which executes on receipt of a particular signal.
+    Traps can be overwritten and/or user-defined.
+
+
