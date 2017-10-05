@@ -7,6 +7,7 @@ General Notes:
     Some whitespace sensitivity
     Tries to interpret everything as a command
     Concatenates stuff by default; watch out!
+    Single and double quotes are NOT equivalent.  See 'quoting'
 
 Symbols and Characters:
     #           A single-line comment
@@ -18,6 +19,8 @@ Symbols and Characters:
     $@          All arguments passed to a script
     $#          The number of arguments passed to a script
     |           Piping
+    :-          Test for unset/null before substitution.  See parameter expansion.
+    :=          Test for unset/null before assignment.  See parameter expansion.
 
 
 Make script executable:
@@ -42,8 +45,116 @@ Reserved Keywords:
     local               Make a variable assignment local rather than global (as is default)
     $REPLY              The default variable for user input from 'read'
 
-Printing/Piping/Redirection:
-    echo [any old thing]        Prints text to StdOut.  Ignores quotes (single or double)
+Quoting:
+    Single quotes '' preserve the literal value of ALL characters contained within.  No escape sequences.
+    Double quotes "" preserve the literal value of all contained characters except $, `, \, *, and @
+    Escape sequences are valid within strings quoted as $'string'.  The typical backslash '\' is the escape character.
+
+Expansion:
+    Brace Expansion:
+        Basically distribution and concatenation.  Ignores ${ as this is for parameter expansion.  Example:
+            echo a{d,c,b}e      Yields: ade ace abe
+        Use example:
+            mdkir ./docs/{ex1,ex2,ex3}/img
+            # This creates the following directories: ./docs/ex1/img, ./docs/ex2/img, ./docs/ex3/img
+
+    Tilde Expansion:
+        Bash interprets an unquoted string between a tilde ~ and a forward slash / as a login name.  If it is null,
+        it is replaced with the default user name or HOME shell variable.
+        If the tilde prefix is '~+' it is replaced with the value of shell variable PWD.
+        If it is '~-' it is replaced with shell variable OLDPWD (if set).
+
+    Shell Parameter Expansion:
+        The '$' character intoduces parameter expansion, command substitution, or arithmetic expansion.  The parameter
+        or symbol to be expanded may be optionally enclosed in braces {} to protect the variable from surrounding
+        characters that may be incorrectly interpreted as part of the name.
+        Examples:
+            # Get value of variable
+            ${parameter}            # Returns stored value of parameter
+            # Test for unset/null
+            ${parameter:-word}      # If parameter is unset/null, the expansion of word is substituted.
+            ${parameter:=word}      # If parameter is unset/null, the expansion of word is assigned to parameter.
+            ${parameter:?word}      # If parameter is unset/null, the expansion of word is sent to StdErr
+            ${parameter:+word}      # If parameter is unset/null, nothing.  Otherwise expansion of word is substituded.
+            # Substring/Subarray Expansion
+            ${string:offset:length} # Expands to a subset of 'string' from int 'offset' to int 'length'
+                                    # If int 'length' is not given, subset extends to end of 'string'
+                                    # If 'length' or 'offset' are <0, counts from end of 'string'
+                                    # NOTE!  If using a negative number, put a space between ':' and '-' to avoid ':-'
+        Variable Indirection:
+            The name of a parameter to be expanded can be constructed by a process before expansion.
+            Syntax:
+                ${!parameter}
+                ${!my*}             # Expands to all variable names that start with 'my'
+                ${!my@}             # Same as above but expands enclosed in double quotes.
+
+    Command Substitution:
+        Replaces a command with the output of the command.  Has two valid syntaxes with subtle differences.
+            $(command)              # Note these are parentheses (), not braces {}
+            `command`               # Enclosed in backticks (on the tilde ~ key). Backslash '\' works differently.
+
+    Arithmetic Expansion:
+        Allows evaluation of an arithmetic expression and substitutes the result.
+        Parameter and variable expansion is allowable within parentheses.
+        Syntax:
+            $(( expression ))
+
+    Word Splitting:
+        Any unquoted characters are checked for word splitting.  This is the parsing of commands by field separators.
+        Valid field separators are defined by the $IFS bash variable (defaut = <space><tab><newline>)
+        Any resulting null strings are ignored.  Leading/trailing $IFS characters are removed.
+
+    Process Substitution:
+        Only supported on systems that support named pipes (see piping).  Related to redirection.
+        Not sure exactly what's going on here.
+        Syntax:
+            >(list)             # Evaluates to a filename.  Writing to filename provides input to 'list'
+            <(list)             # The filename passed as an argument is read to obtain output of 'list'
+
+    Pattern Matching:
+        After word splitting, Bash scans each word for the characters '*', '?', and '['
+        If these characters are present, the word is interpreted as a glob 'pattern' which is evaluated.
+
+    Filename Expansion:
+        The filename separator character '/' must be of the correct type for the OS to interpret as a filename.
+        Pattern matching can be used for filename expansion, but any periods '.' or slashes '/' must match explicitly.
+
+    Quote Removal:
+        After all expansions, all unquoted occurences of \, ', and " are removed.
+
+Redirection:
+    Redirecting Output:
+        [n]>filename            # Redirect output from file descriptor 'n' to filename.
+                                # If 'filename' exists, its content is erased first.
+                                # If 'n' is omitted, defaults to StdOut
+    Redirecting Input:
+        [n]<filename            # Opens 'filename' for reading via file descriptor 'n'.
+                                # If 'n' is omitted, defaults to StdIn
+    Appending Redirected Output:
+        [n]>>filename           # Redirects output from file descriptor 'n' to filename.
+                                # If 'filename' exists, output appends to existing content.
+                                # If 'n' is omitted, defaults to StdOut
+    Redirect StdOut and StdErr Simultaneously:
+        &>filename              # Special character to redirect both StdOut and StdErr to filename.
+    Duplicating File Descriptors:
+        [n]<&filename           # Duplicate input file descriptor; e.g. copy filename content to file descriptor 'n'
+        [n]>&filename           # Duplicate output file descriptor; e.g. copy file descriptor 'n' output to filename
+        >&filename              # Direct StdOut to both the screen (default) and to filename
+        [n]<&[m]-               # Move 'm' to 'n'.Copies file descriptor 'm' to file descriptor 'n' then deletes 'm'
+        [n]<>filename           # Open file descriptor 'n' for reading and writing.
+
+    File Descriptor:
+        A UNIX concept.  A file descriptor is a non-negative integer used as an abstract handle to access a file or
+        other I/O resource such as Standard Input, Standard Output, and Standard Error.
+        Value   Name
+        -----   ----
+        0       Standard Input
+        1       Standard Output
+        2       Standard Error
+
+        Assign a file descriptor:
+            {varname}
+
 
 Variables:
     Variables are global by default.  Use the 'local' keyword to define a local variable within
@@ -67,16 +178,59 @@ Arrays:
                                 #   Get a length
                                 [@] Get all elements
 
+Symbolic Operators:
+    Arithmetic:
+        x++, x--            # Post increment and decrement
+        ++x, --x            # Pre increment and decrement
+        -, +                # Unary plus/minus
+        +, -                # Addition, subtraction
+        *, /, %             # Multiplication, division, remainder
+        **                  # Exponentiation
+
+    Boolean (Logical):
+        !                   # Logical negation
+        ==, !=              # Test for equality/inequality
+        <, >, <=, >=        # Logical comparison
+        &&                  # Logical AND
+        ||                  # Logical OR
+
+    Bitwise Operators:
+        ~                   # Bitwise negation
+        &                   # Bitwise AND
+        |                   # Bitwise OR
+        ^                   # Bitwise XOR
+        >>, <<              # Bitshift right, left
+
+    Ternary:
+        expr0 ? expr1 : expr2   # Ternary operator.  Just like C.  If expr0==True, expr1; else expr2
+
+    Assignment:
+        =, +=, -=, *=, /=, %=   # Arithmetic operator assignment.
+        <<=, >>=, &=, |=, ^=    # Bitwise operator assignment.
+
+Base Representation:
+    Hexadecimal:
+        0xNNNN              # A hexidecimal number where 'NNNN' are digits between 0 and F.  Can also use capital 'X'
+    Octal:
+        0NNNN               # An octal number where 'NNNN' are digits between 0 and 7.  As if anyone uses this shit.
+    Binary:
+        [2#]NNNN            # A binary number where 'NNNN' are digits of either 0 or 1.
+
 Built-In Functions:
 
-    echo                        Print to Standard Out (StdOut)
-                                -e: enable escape sequences; -n: suppress trailing newline;
+    cat [file]                  Concatenate files or StdIn and print to StdOut or redirect.
+                                Prints contents of 'file' to StdOut.
+    cat > filename              Redirect output from StdIn to 'filename'.  Ctrl+C to terminate.
     chmod                       Change a file's mode bits (read/write/execute)
     clear                       Clear the screen.
+    echo                        Print to Standard Out (StdOut)
+                                -e: enable escape sequences; -n: suppress trailing newline;
     ls                          List the contents of the current directory
                                 -l : 'long' format.  More detail.
     read [var]                  Get user input in string form. Stores in 'var' if provided, else in $REPLY
                                 -a: read as space-delimited array; 
+    set                         Allows you to set the values of shell options and positional parameters.
+                                Calling bash with flag -a is the same as opening bash then calling 'set -a'
     seq [begin] [end]           Return a sequence of numbers from 'begin' to 'end'
     sudo                        Do as superuser (requires password)
     tar                         Archive (zip) or unarchive (unzip) a file.
@@ -85,6 +239,26 @@ Built-In Functions:
                                 -o: OS; -m: machine; -a: all
     which filename              Returns pathnames of the files by searching PATH
     whoami                      Returns the current username
+
+User-Defined Functions:
+    User-defined functions work exactly like built-in shell functions.
+    They are defined using one of two possible syntax options.
+
+    Syntax 1:
+        name () compound-command [ redirections ]
+        # 'name' is the name of the function.  The parentheses are necessary.
+
+    Syntax 2:
+        function name [()] compound-command [ redirections ]
+        # 'function' is a reserved keyword.  'name' is the name of the function. Parentheses optional.
+
+    Compound Commands:
+        A construct combining several commands to execute in order.
+        Commands can be separated by newlines, semicolons ; or both.
+        A compound command is typically wrapped in braces {}.
+    
+    Function Example:
+        ...
 
 Loops:
     For-loop:
