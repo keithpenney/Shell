@@ -1,5 +1,8 @@
 Linux BASH Scripting Notes:
 
+https://linuxconfig.org/bash-scripting-tutorial
+https://www.gnu.org/software/bash/manual/html_node/Builtin-Index.html#Builtin-Index
+
 General Notes:
     Case insensitive
     Help:
