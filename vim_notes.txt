@@ -26,7 +26,7 @@ nG = :n = move cursor to line n
 
 :q = quit (exit)
 
-:q = force quit
+:q! = force quit
 
 :wq = writeout and quit (quit and save)
 
