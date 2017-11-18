@@ -235,6 +235,7 @@ Built-In Functions:
     set                         Allows you to set the values of shell options and positional parameters.
                                 Calling bash with flag -a is the same as opening bash then calling 'set -a'
     seq [begin] [end]           Return a sequence of numbers from 'begin' to 'end'
+    stream                      Stream pixel data from one image source to a destination (very lightweight).
     sudo                        Do as superuser (requires password)
     tar                         Archive (zip) or unarchive (unzip) a file.
                                 -z: zip; -c: create; -a: append
