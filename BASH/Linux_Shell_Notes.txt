@@ -264,7 +264,19 @@ User-Defined Functions:
     Function Example:
         ...
 
-Loops:
+Flow Control and Conditional Statements:
+    If-statement:
+        If statements begin with keyword 'if' and end with keyword 'fi'
+        They can include an else-if ('elif') condition and an else condition.
+        In the example below, reserved keywords are 'if', 'then', 'elif', 'else', and 'fi'
+        If-statement syntax:
+            if test-commands; then
+                consequent-commands;
+            elif more-test-commands; then
+                more-consequents;
+            else final-consequents;
+            fi
+
     For-loop:
         We can loop over a sequence of integers in the following way.
         Incremental Sytanx:
