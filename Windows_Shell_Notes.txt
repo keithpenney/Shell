@@ -86,10 +86,11 @@ Set
         delete (unset) the variable VAR_NAME
         sometimes called "clobbering"
 
-    setx VAR_NAME=SOME_STUFF_HERE
+    setx VAR_NAME SOME_STUFF_HERE
         permanently set VAR_NAME to SOME_STUFF_HERE
+        NOTE! Different syntax with 'setx' and 'set' (no '=') for absolutely no reason at all.
 
-    setx VAR_NAME=%VAR_NAME% SOME_STUFF_HERE
+    setx VAR_NAME %VAR_NAME% SOME_STUFF_HERE
         permanently append SOME_STUFF_HERE to VAR_NAME
 
     set VAR_NAME=cd ../
