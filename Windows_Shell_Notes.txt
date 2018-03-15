@@ -86,11 +86,10 @@ Set
         delete (unset) the variable VAR_NAME
         sometimes called "clobbering"
 
-    setx VAR_NAME SOME_STUFF_HERE
+    setx VAR_NAME=SOME_STUFF_HERE
         permanently set VAR_NAME to SOME_STUFF_HERE
-        NOTE! Different syntax with 'setx' and 'set' (no '=') for absolutely no reason at all.
 
-    setx VAR_NAME %VAR_NAME% SOME_STUFF_HERE
+    setx VAR_NAME=%VAR_NAME%SOME_STUFF_HERE
         permanently append SOME_STUFF_HERE to VAR_NAME
 
     set VAR_NAME=cd ../
@@ -135,7 +134,7 @@ Labels/GoTo
     GoTo syntax
         GoTo :mylabel
 
-Command Arguments:
+Command Arguments (in batch files):
     %*      A string including all arguments (space-separated)
     %0      The command/filename called
     %1      The first argument
@@ -144,11 +143,23 @@ Command Arguments:
     shift       Shifts the values of arguments "downwards" (e.g. puts val of %1 into %0, val of %2 into %1, etc.)
     shift /n    Start shifting at the nth argument (n can be 0 to 8)
                 Note!  Shift does not affect the value of %*
+    %~1     Expands %1 removing any surrounding quotes ("")
+    %~f1    Expands %1 to a fully-qualified path name
+    %~d1    Expands %1 to a drive letter only
+    %~p1    Expands %1 to a path only
+    %~n1    Expands %1 to a filename only
+    %~x1    Expands %1 to a file extension only
+    %~s1    Expanded path contains only short names
+    %~a1    Expands %1 to file attributes
+    %~t1    Expands %1 to date/time of file
+    %~z1    Expands %1 to size of file
+    %~$PATH:1   Searches the PATH envar and expands %1 to the fully-qualified name of the first match found (else "")
+            These can be combined, as in:
+    %~nx1   Expands %1 to a filename and extension
 
 Extra Functions:
     Net     Enables a lot of network-related activity.
-
-    Systeminfo  Provides a ton of info about the system hardware and current session
+    Attrib  Show/modify file attributes ('S'ystem, 'A'rchived, 'H'idden, 'R'ead-only)
 =========================================== PowerShell ================================================================
 
 General differences:
@@ -159,3 +170,10 @@ Handling variables (different than environment variables):
     $mynum = 4
     $var -replace "want", "need"
 
+Example - Serial Port Communication
+    $port = new-Object System.IO.Ports.SerialPort COM1,9600,None,8,one
+    :: COMportNumber,BaudRate,Parity,DataBits,StopBits
+    $port.Open()
+    $port.WriteLine("hello world")
+    $port.ReadExisting()
+    $port.Close()
