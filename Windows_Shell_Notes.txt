@@ -32,11 +32,28 @@ Help
 
 Core functions:
     cd      change directory
-    dir     see contents of directory
-    echo    (see below)
-    del     delete a file
     copy    copy file1 file2 (copies file1 to file2)
             Weird.  When copy encounters an error, it outputs to Standard Out, not Standard Error
+    cls     Clear the screen
+    del     delete a file
+    dir     see contents of directory
+    echo    (see below)
+    findstr Print lines matching a pattern.  Like Unix grep
+    help    Get help (like Unix 'man')
+    move    Moves files/folders to a new location
+    ping    Test network connection
+    pushd   Stores the current path on the stack and changes directories to a new path
+    popd    Changes the current working path to the last path pushed to the stack
+    rmdir   Delete a directory
+
+Pushd/Popd:
+    Commands pushd and popd are not actually as useful as they sound.
+    It seems the directory stack is overwritten by cd to be the default for the command window.
+    :: Terminal Example ::
+    C:\folder1>pushd \MyStuff\SomeFolder
+    C:\folder1\MyStuff\SomeFolder>popd
+    C:\folder1>
+    :: End Example ::
 
 ErrorLevel
     Most commands return an errorlevel (0 means successful, 1 or > means error of some sort)
@@ -158,12 +175,18 @@ Command Arguments (in batch files):
     %~nx1   Expands %1 to a filename and extension
 
 Extra Functions:
-    Net     Enables a lot of network-related activity.
-    Attrib  Show/modify file attributes ('S'ystem, 'A'rchived, 'H'idden, 'R'ead-only)
+    Net         Enables a lot of network-related activity.
+    Attrib      Show/modify file attributes ('S'ystem, 'A'rchived, 'H'idden, 'R'ead-only)
+    robocopy    Robust file copy.  Lots of neat configuration options.
+    xcopy       Another copy mechanism.
+
 =========================================== PowerShell ================================================================
 
 General differences:
     Environment variables don't work the same.  "Set" is different.
+
+Comments:
+    # Comments can also begin with the pound character '#' like Python
 
 Handling variables (different than environment variables):
     $var = "Anything you want"
