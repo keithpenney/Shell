@@ -25,6 +25,23 @@ Symbols and Characters:
     :-          Test for unset/null before substitution.  See parameter expansion.
     :=          Test for unset/null before assignment.  See parameter expansion.
 
+Shortcuts/Hotkeys/Key Bindings:
+    ctrl + _        Undo the last edit (not the last command)
+    ctrl + t        Swap two characters
+    alt  + t        Swap two words
+    alt  + .        Print last argument from previous command
+    ctrl + x + *    Expand glob/star
+    ctrl + arrow    Move by words (rather than by characters)
+    alt  + f        Move forward one word
+    alt  + b        Move backward one word
+    ctrl + x + ctrl + e     Open the command string in an editor to edit before executing
+    ctrl + e        Move cursor to the end
+    ctrl + a        Move cursor to the beginning
+    ctrl + xx       Move to the opposite end of the line
+    ctrl + u        Cut everything before the cursor
+    ctrl + k        Cut everything after the cursor
+    ctrl + y        Paste from the buffer
+    ctrl + l        Clear screen
 
 Script Execution:
     Option 1.  Execute script by directly calling bash (or another compatible shell, e.g. 'sh')
@@ -34,6 +51,9 @@ Script Execution:
         ./myScript.sh
 
 Shebang:
+    Shebang scripts start with #! and are typically the first line of a file.
+    These help a Unix-like OS identify the type of file or program associated with it.
+    The Windows world uses only the file extension to determine the type, whereas Unix can alternatively use Shebangs
 
 Execute Shell Commands with BASH:
     Some commands (like 'echo') will take almost any argument completely unevaluated.
@@ -231,6 +251,7 @@ Built-In Functions:
     cat > filename              Redirect output from StdIn to 'filename'.  Ctrl+C to terminate.
     chmod                       Change a file's mode bits (read/write/execute)
     clear                       Clear the screen.
+    command -V [cmd]            Provide a bit of information about command 'cmd'
     echo                        Print to Standard Out (StdOut)
                                 -e: enable escape sequences; -n: suppress trailing newline;
     ls                          List the contents of the current directory
@@ -295,6 +316,13 @@ Flow Control and Conditional Statements:
             for item in iterable; do
                 # do stuff with 'item'
             done
+
+Chaining Multiple Expressions:
+    In an interactive shell environment, sometimes you want to give several commands at once and let them execute one
+    after the other (instead of writing a script or waiting for each to complete).  To do this, we simply separate the
+    commands with the character(s) below, depending on intended result.
+    ;       Execute the commands regardless of outcome.
+    &&      Execute the second command only if the first one is successful
 
 Signals and Traps:
     When a C program terminates, it typically returns an integer indicating something about how/why it terminated.
