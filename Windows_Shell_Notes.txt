@@ -143,6 +143,14 @@ If
         If not exist filename echo doesn't exist bro^!
         If exist *.txt echo There's some text here.
 
+For
+    For /?  for help
+    FOR %variable IN (set) DO command [command-parameters]
+
+    /R      Recursive: walks the directory, executing the FOR loop for each folder
+    /L      The set is a sequence of numbers of (start, step, end) format
+    /F      The set is a "file set", which is one or more file names to be opened, read, and processed.
+
 Labels/GoTo
     Labels are preceded by a colon :
         :mylabel
