@@ -252,10 +252,18 @@ Built-In Functions:
     chmod                       Change a file's mode bits (read/write/execute)
     clear                       Clear the screen.
     command -V [cmd]            Provide a bit of information about command 'cmd'
+    dpkg -i filename.deb        Install a '.deb' file (always 'sudo' this one).
     echo                        Print to Standard Out (StdOut)
                                 -e: enable escape sequences; -n: suppress trailing newline;
-    ls                          List the contents of the current directory
+    file FILENAME               Returns file type information about file FILENAME
+    find DIR -name FILENAME -print  Prints the location of FILENAME if found in directory DIR
+                                Note!  To use globs in the FILENAME, enclose them in single-quotes ''
+    grep PATTERN [file(s)]      Search for and print out all lines in file(s) matching PATTERN
+    less FILENAME               Read the contents of a long file FILENAME broken up into pages.
+    ls [DIR]                    List the contents of the directory DIR.  Defaults to current directory.
                                 -l : 'long' format.  More detail.
+    passwd [USERNAME]           Change the password for user USERNAME.  Defaults to current user.
+    pwd                         Print the working (current) directory
     read [var]                  Get user input in string form. Stores in 'var' if provided, else in $REPLY
                                 -a: read as space-delimited array; 
     set                         Allows you to set the values of shell options and positional parameters.
@@ -341,4 +349,6 @@ Signals and Traps:
     A trap is a built-in command which executes on receipt of a particular signal.
     Traps can be overwritten and/or user-defined.
 
-
+Handy Examples:
+    # Search /.../words for pattern 'ie' (returns a lot!) - pipe to 'less' to paginate
+    grep ie /usr/share/dict/words | less
