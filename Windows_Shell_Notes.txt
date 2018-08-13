@@ -32,7 +32,7 @@ Help
 
 Core functions:
     cd      change directory
-    copy    copy file1 file2 (copies file1 to file2)
+    copy    copy file1 file2 (copies file1 to file2).  See more below.
             Weird.  When copy encounters an error, it outputs to Standard Out, not Standard Error
     cls     Clear the screen
     del     delete a file
@@ -45,6 +45,14 @@ Core functions:
     pushd   Stores the current path on the stack and changes directories to a new path
     popd    Changes the current working path to the last path pushed to the stack
     rmdir   Delete a directory
+
+Copy:
+    Command 'copy' is often used with the device name 'con' (for 'console').  This allows a few
+    different options which sort of overlap with 'echo'.
+    copy con myfile.txt
+        Copy texte entered from the 'console' ('con') to the file 'myfile.txt'
+    copy myfile.txt con
+        Copy the contents of 'myfile.txt' to the console ('con').
 
 Pushd/Popd:
     Commands pushd and popd are not actually as useful as they sound.
