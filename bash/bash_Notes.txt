@@ -45,7 +45,7 @@ Shortcuts/Hotkeys/Key Bindings:
 
 Script Execution:
     Option 1.  Execute script by directly calling bash (or another compatible shell, e.g. 'sh')
-        bash myScript.h
+        bash myScript.sh
     Option 2.  Make script executable and directly calling the script.
         chmod +x myScript.sh
         ./myScript.sh
