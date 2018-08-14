@@ -244,7 +244,7 @@ Base Representation:
     Binary:
         [2#]NNNN            # A binary number where 'NNNN' are digits of either 0 or 1.
 
-Built-In Functions:
+Common Commands:
 
     cat [file]                  Concatenate files or StdIn and print to StdOut or redirect.
                                 Prints contents of 'file' to StdOut.
@@ -259,6 +259,7 @@ Built-In Functions:
     find DIR -name FILENAME -print  Prints the location of FILENAME if found in directory DIR
                                 Note!  To use globs in the FILENAME, enclose them in single-quotes ''
     grep PATTERN [file(s)]      Search for and print out all lines in file(s) matching PATTERN
+    ifconfig [-a | -s | -v]     Show network InterFace connection information (like Windows ipconfig)
     less FILENAME               Read the contents of a long file FILENAME broken up into pages.
     ls [DIR]                    List the contents of the directory DIR.  Defaults to current directory.
                                 -l : 'long' format.  More detail.

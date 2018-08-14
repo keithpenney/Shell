@@ -1,4 +1,4 @@
-Windows Shell Scripting / Command Line Notes
+Windows Shell Scripting via CMD / Command Line Notes
 
 General Notes:
     Whitespace is important!  Do not add/remove any spaces for clarity; this will change the content.
