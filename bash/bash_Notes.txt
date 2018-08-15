@@ -43,6 +43,38 @@ Shortcuts/Hotkeys/Key Bindings:
     ctrl + y        Paste from the buffer
     ctrl + l        Clear screen
 
+Getting Help:
+    Man Pages:
+        Most commands have an entry in the "man pages" (manual) which can be accessed simply by:
+            man CMD
+        where 'CMD' is the command in question.
+        If you don't quite recall the name of the command, you can try the "-k" (keyword) flag which will return a
+        list of command names that match the keyword.
+            man -k KW
+        where 'KW' is the desired keyword.
+
+        Sections:
+            Man pages are broken down into numbered sections.
+            To query a particular section, use:
+                man N CMD
+            where 'N' is the section number (see below) and 'CMD' is the command in question.
+            (1)     User commands
+            (2)     System calls
+            (3)     Higher-level Unix programming library documentation
+            (4)     Device interface and driver information
+            (5)     File descriptions (system configuration files)
+            (6)     Games
+            (7)     File formats, conventions, and encodings (ASCII, suffixes, etc.)
+            (8)     System commands and servers
+
+    Help:
+        The syntax varies from command to command, but you can usually find help by using flags '-h' or '--help'.
+
+    Info/Texinfo:
+        Some projects (primarly GNU) opt for "info" (or "texinfo") pages over man pages.  To view these, try:
+            info CMD
+        where 'CMD' is the command in question.
+
 Script Execution:
     Option 1.  Execute script by directly calling bash (or another compatible shell, e.g. 'sh')
         bash myScript.sh
@@ -61,6 +93,15 @@ Execute Shell Commands with BASH:
     in backticks `` (under the tilde ~).
 
     echo `uname -o`     Evaluates uname -o and echos the result to StdOut
+
+Job Control:
+    You can pause a process by pressing "Ctrl+Z" during operation.
+    Once paused, a process can be sent to the background with 'bg' or brought to the foreground with 'fg'
+    You can immediately cast a process into the background with the ampersand "&".  Example:
+        gunzip myFile.gz &
+    This will print the process id and then immediately return you to the prompt, running 'gunzip myFile.gz'
+    in the background.
+    Note that it might be helpful to redirect output to a file so that it doesn't bug you from the background.
 
 Reserved Keywords:
     declare [-flag] var Declare variables and give them attributes.
@@ -163,6 +204,7 @@ Redirection:
                                 # If 'n' is omitted, defaults to StdOut
     Redirect StdOut and StdErr Simultaneously:
         &>filename              # Special character to redirect both StdOut and StdErr to filename.
+        2>&1                    # Redirect StdErr to the same place as StdOut
     Duplicating File Descriptors:
         [n]<&filename           # Duplicate input file descriptor; e.g. copy filename content to file descriptor 'n'
         [n]>&filename           # Duplicate output file descriptor; e.g. copy file descriptor 'n' output to filename
@@ -260,10 +302,14 @@ Common Commands:
                                 Note!  To use globs in the FILENAME, enclose them in single-quotes ''
     grep PATTERN [file(s)]      Search for and print out all lines in file(s) matching PATTERN
     ifconfig [-a | -s | -v]     Show network InterFace connection information (like Windows ipconfig)
+    kill PID                    Terminate a process by its process id (PID).
+                                -STOP: pause a process; -CONT: continue after a pause.
     less FILENAME               Read the contents of a long file FILENAME broken up into pages.
     ls [DIR]                    List the contents of the directory DIR.  Defaults to current directory.
                                 -l : 'long' format.  More detail.
     passwd [USERNAME]           Change the password for user USERNAME.  Defaults to current user.
+    ps                          List currently running processes.
+                                x: only your processes; ax: all processes; u: more info; w: fulll command names
     pwd                         Print the working (current) directory
     read [var]                  Get user input in string form. Stores in 'var' if provided, else in $REPLY
                                 -a: read as space-delimited array; 
@@ -274,6 +320,7 @@ Common Commands:
     sudo                        Do as superuser (requires password)
     tar                         Archive (zip) or unarchive (unzip) a file.
                                 -z: zip; -c: create; -a: append
+    tr a-z A-Z                  Translate standard input.  Swap all lowercase chars (a-z) in stdin with uppercase (A-Z)
     uname                       Print system information
                                 -o: OS; -m: machine; -a: all
     which filename              Returns pathnames of the files by searching PATH
