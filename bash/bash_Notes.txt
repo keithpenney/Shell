@@ -25,56 +25,6 @@ Symbols and Characters:
     :-          Test for unset/null before substitution.  See parameter expansion.
     :=          Test for unset/null before assignment.  See parameter expansion.
 
-Shortcuts/Hotkeys/Key Bindings:
-    ctrl + _        Undo the last edit (not the last command)
-    ctrl + t        Swap two characters
-    alt  + t        Swap two words
-    alt  + .        Print last argument from previous command
-    ctrl + x + *    Expand glob/star
-    ctrl + arrow    Move by words (rather than by characters)
-    alt  + f        Move forward one word
-    alt  + b        Move backward one word
-    ctrl + x + ctrl + e     Open the command string in an editor to edit before executing
-    ctrl + e        Move cursor to the end
-    ctrl + a        Move cursor to the beginning
-    ctrl + xx       Move to the opposite end of the line
-    ctrl + u        Cut everything before the cursor
-    ctrl + k        Cut everything after the cursor
-    ctrl + y        Paste from the buffer
-    ctrl + l        Clear screen
-
-Getting Help:
-    Man Pages:
-        Most commands have an entry in the "man pages" (manual) which can be accessed simply by:
-            man CMD
-        where 'CMD' is the command in question.
-        If you don't quite recall the name of the command, you can try the "-k" (keyword) flag which will return a
-        list of command names that match the keyword.
-            man -k KW
-        where 'KW' is the desired keyword.
-
-        Sections:
-            Man pages are broken down into numbered sections.
-            To query a particular section, use:
-                man N CMD
-            where 'N' is the section number (see below) and 'CMD' is the command in question.
-            (1)     User commands
-            (2)     System calls
-            (3)     Higher-level Unix programming library documentation
-            (4)     Device interface and driver information
-            (5)     File descriptions (system configuration files)
-            (6)     Games
-            (7)     File formats, conventions, and encodings (ASCII, suffixes, etc.)
-            (8)     System commands and servers
-
-    Help:
-        The syntax varies from command to command, but you can usually find help by using flags '-h' or '--help'.
-
-    Info/Texinfo:
-        Some projects (primarly GNU) opt for "info" (or "texinfo") pages over man pages.  To view these, try:
-            info CMD
-        where 'CMD' is the command in question.
-
 Script Execution:
     Option 1.  Execute script by directly calling bash (or another compatible shell, e.g. 'sh')
         bash myScript.sh
@@ -82,26 +32,12 @@ Script Execution:
         chmod +x myScript.sh
         ./myScript.sh
 
-Shebang:
-    Shebang scripts start with #! and are typically the first line of a file.
-    These help a Unix-like OS identify the type of file or program associated with it.
-    The Windows world uses only the file extension to determine the type, whereas Unix can alternatively use Shebangs
-
 Execute Shell Commands with BASH:
     Some commands (like 'echo') will take almost any argument completely unevaluated.
     If we want to evaluate an argument (e.g. execute a shell command and use the output), we can wrap the command
     in backticks `` (under the tilde ~).
 
     echo `uname -o`     Evaluates uname -o and echos the result to StdOut
-
-Job Control:
-    You can pause a process by pressing "Ctrl+Z" during operation.
-    Once paused, a process can be sent to the background with 'bg' or brought to the foreground with 'fg'
-    You can immediately cast a process into the background with the ampersand "&".  Example:
-        gunzip myFile.gz &
-    This will print the process id and then immediately return you to the prompt, running 'gunzip myFile.gz'
-    in the background.
-    Note that it might be helpful to redirect output to a file so that it doesn't bug you from the background.
 
 Reserved Keywords:
     declare [-flag] var Declare variables and give them attributes.
@@ -224,7 +160,6 @@ Redirection:
         Assign a file descriptor:
             {varname}
 
-
 Variables:
     Variables are global by default.  Use the 'local' keyword to define a local variable within
     a narrowed scope (e.g. inside a function or loop).
@@ -285,46 +220,6 @@ Base Representation:
         0NNNN               # An octal number where 'NNNN' are digits between 0 and 7.  As if anyone uses this shit.
     Binary:
         [2#]NNNN            # A binary number where 'NNNN' are digits of either 0 or 1.
-
-Common Commands:
-
-    cat [file]                  Concatenate files or StdIn and print to StdOut or redirect.
-                                Prints contents of 'file' to StdOut.
-    cat > filename              Redirect output from StdIn to 'filename'.  Ctrl+C to terminate.
-    chmod                       Change a file's mode bits (read/write/execute)
-    clear                       Clear the screen.
-    command -V [cmd]            Provide a bit of information about command 'cmd'
-    dpkg -i filename.deb        Install a '.deb' file (always 'sudo' this one).
-    echo                        Print to Standard Out (StdOut)
-                                -e: enable escape sequences; -n: suppress trailing newline;
-    file FILENAME               Returns file type information about file FILENAME
-    find DIR -name FILENAME -print  Prints the location of FILENAME if found in directory DIR
-                                Note!  To use globs in the FILENAME, enclose them in single-quotes ''
-    grep PATTERN [file(s)]      Search for and print out all lines in file(s) matching PATTERN
-    ifconfig [-a | -s | -v]     Show network InterFace connection information (like Windows ipconfig)
-    kill PID                    Terminate a process by its process id (PID).
-                                -STOP: pause a process; -CONT: continue after a pause.
-    less FILENAME               Read the contents of a long file FILENAME broken up into pages.
-    ls [DIR]                    List the contents of the directory DIR.  Defaults to current directory.
-                                -l : 'long' format.  More detail.
-    passwd [USERNAME]           Change the password for user USERNAME.  Defaults to current user.
-    ps                          List currently running processes.
-                                x: only your processes; ax: all processes; u: more info; w: fulll command names
-    pwd                         Print the working (current) directory
-    read [var]                  Get user input in string form. Stores in 'var' if provided, else in $REPLY
-                                -a: read as space-delimited array; 
-    set                         Allows you to set the values of shell options and positional parameters.
-                                Calling bash with flag -a is the same as opening bash then calling 'set -a'
-    seq [begin] [end]           Return a sequence of numbers from 'begin' to 'end'
-    stream                      Stream pixel data from one image source to a destination (very lightweight).
-    sudo                        Do as superuser (requires password)
-    tar                         Archive (zip) or unarchive (unzip) a file.
-                                -z: zip; -c: create; -a: append
-    tr a-z A-Z                  Translate standard input.  Swap all lowercase chars (a-z) in stdin with uppercase (A-Z)
-    uname                       Print system information
-                                -o: OS; -m: machine; -a: all
-    which filename              Returns pathnames of the files by searching PATH
-    whoami                      Returns the current username
 
 User-Defined Functions:
     User-defined functions work exactly like built-in shell functions.
@@ -397,6 +292,4 @@ Signals and Traps:
     A trap is a built-in command which executes on receipt of a particular signal.
     Traps can be overwritten and/or user-defined.
 
-Handy Examples:
-    # Search /.../words for pattern 'ie' (returns a lot!) - pipe to 'less' to paginate
-    grep ie /usr/share/dict/words | less
+
