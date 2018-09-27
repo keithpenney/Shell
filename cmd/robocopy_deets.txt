@@ -23,5 +23,8 @@
 ::              T - Temporary
 ::              O - Offline
 
+:: /log:FILE    log to file "FILE", overwriting if it exists.
+:: /log+:FILE   append to file "FILE"
+
 robocopy "C:\Users\...\source" "C:\Users\...\dest" /log:"C:\Users\kpenney\backup_log.txt"
 pause
