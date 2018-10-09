@@ -30,6 +30,11 @@ Help
     FUNCTION_NAME /?
         Read documentation for function FUNCTION_NAME
 
+Clipboard
+    The 'clip' command redirects output to the Windows clipboard for pasting elsewhere.
+    dir | clip          Places output of 'dir' function onto the Windows clipboard
+    clip < file.txt     Places a copy of the contents of 'file.txt' onto the Windows clipboard.
+
 Core functions:
     cd      change directory
     copy    copy file1 file2 (copies file1 to file2).  See more below.
