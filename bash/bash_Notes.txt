@@ -213,6 +213,18 @@ Symbolic Operators:
         =, +=, -=, *=, /=, %=   # Arithmetic operator assignment.
         <<=, >>=, &=, |=, ^=    # Bitwise operator assignment.
 
+Conditional Expressions:
+    Anything inside double brackets [[ ]] is treated as conditional expression.
+    Such an expression is evaluated for truth and the expression inside the brackets
+    is replaced with the evaluated truthiness.  These operators can be any of the
+    Boolean operators above or can be (i.e):
+        [[ -n $foo ]]       # True if variable 'foo' is non-empty
+        [[ -e $myFile ]]    # True if myFile exists
+
+    Recall that when comparing strings, the RHS is evaluated as a pattern:
+        [[ $foo == a* ]]    # True if variable 'foo' starts with 'a'
+        [[ $foo == "a*" ]]  # True only if variable 'foo' is exactly 'a*'
+
 Base Representation:
     Hexadecimal:
         0xNNNN              # A hexidecimal number where 'NNNN' are digits between 0 and F.  Can also use capital 'X'
