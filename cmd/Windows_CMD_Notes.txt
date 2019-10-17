@@ -115,13 +115,7 @@ Set
     set VAR_NAME=
         delete (unset) the variable VAR_NAME
         sometimes called "clobbering"
-
-    setx VAR_NAME=SOME_STUFF_HERE
-        permanently set VAR_NAME to SOME_STUFF_HERE
-
-    setx VAR_NAME=%VAR_NAME%SOME_STUFF_HERE
-        permanently append SOME_STUFF_HERE to VAR_NAME
-
+        
     set VAR_NAME=cd ../
         set VAR_NAME to a command. Then run the command with %VAR_NAME%
 
@@ -130,6 +124,22 @@ Set
         set /a "(22<<2)%3+9"        Evaluates to 10; prints to Standard Out
         set /a VarName="~16"        Evaluates to -17 (two's complement negation); stores value in VarName
         set /a VarName*=2           Multiplies the value of VarName by 2, then assigns VarName to the new value.
+
+Setx
+    -- Stores the variable in the registry:
+    --    User Variables: HKEY_CURRENT_USER\Environment
+    --    Machine Variables: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment
+    -- Note! Setx has a different syntax than Set! This trips me up every time...
+
+    setx VAR_NAME SOME_STUFF_HERE
+        permanently set VAR_NAME to SOME_STUFF_HERE
+
+    setx VAR_NAME %VAR_NAME%SOME_STUFF_HERE
+        permanently append SOME_STUFF_HERE to VAR_NAME
+        
+    setx VAR_NAME ""
+        hide the variable VAR_NAME (will not display with 'Set' but will remain in the registry)
+
 
 If
     If /?   for help
