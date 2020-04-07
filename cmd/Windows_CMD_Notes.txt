@@ -5,7 +5,8 @@ General Notes:
     Sometimes case sensitive.
         function names and environment variables are case INsensitive.
         function parameters can be case Sensitive.
-    If "Quick Edit Mode" is enabled (right click on command prompt title bar, select Properties), paste copied text with a right-click
+    If "Quick Edit Mode" is enabled (right click on command prompt title bar, select Properties), 
+    paste copied text with a right-click
     You can drag and drop batch files (.bat) right into the command prommpt window
 
 Symbols:
@@ -17,9 +18,10 @@ Symbols:
         e.g. Echo Some text to file > C:\filename.txt
     >>  Redirect append.  Send the output of one function/process to a file.  Append by default.
     2>  Redirect error output.  Same as > but for Standard Error, not Standard Output
-    ^   Escape character.  Treats following character as just a character; no evaluation/interpretation.
+        e.g (cd ThisDontExist 2> errortext.txt)
+    ^   Escape character.  Treats following character as just a character; no evaluation/interpretation
     *   Wildcard.  In searches/file operators, you can often use * as a character/string wildcard.
-    Nul A trash can where you can direct output that you want to suppress, e.g (cd ThisDontExist 2> errortext.txt)
+    Nul A trash can where you can direct output that you want to suppress, 
 
 Comments:
     rem anything following rem (remark) is a comment and is ignored.  Works in batch files and cmd.
@@ -96,6 +98,9 @@ Environment Variables (envars)
 
     %VAR_NAME%      use the variable's value instead of the variable object itself
         e.g. echo %VAR_NAME%
+
+    %MyVar:c=d"     Replace all instances of character 'c' with character 'd' in
+                    the expansion of 'MyVar'
 
 Set
     set /?  for help
