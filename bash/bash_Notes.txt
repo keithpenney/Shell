@@ -48,6 +48,10 @@ Reserved Keywords:
     let name=val        Allows arithmetic to be performed on variables.
     local               Make a variable assignment local rather than global (as is default)
     $REPLY              The default variable for user input from 'read'
+    read [flags] [var]  Prompt user for input stored in $var or $REPLY if no 'var' provided.
+                        -s : does not display user input in terminal
+                        -p prompt : displays 'prompt' before receiving input
+                        -e : uses Readline for input (allowing i.e. filename completion)
 
 Quoting:
     Single quotes '' preserve the literal value of ALL characters contained within.  No escape sequences.

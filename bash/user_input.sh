@@ -10,9 +10,9 @@ read word1 word2
 
 echo "Here is your input: \"$word1\" \"$word2\""
 
-echo "What do you think? "
-read
+read -p "Anything else?"
 # 'read' stores now in the default built-in variable $REPLY
+# The -p flag prints a prompt to the user before receiving input
 
 echo -e "You said $REPLY \nDo you mean it? "
 # -e means 'enable escape sequences'
