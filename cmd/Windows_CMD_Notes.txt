@@ -8,6 +8,9 @@ General Notes:
     If "Quick Edit Mode" is enabled (right click on command prompt title bar, select Properties), 
     paste copied text with a right-click
     You can drag and drop batch files (.bat) right into the command prommpt window
+    Batchfiles (.bat) and command files (.cmd) do nearly exactly the same thing.  The only difference
+    is that .cmd files set the ERRORLEVEL regardless of error status while .bat files only set the
+    ERRORLEVEL on an error.
 
 Symbols:
     @   Any line that begins with @ doesn't echo the command itself.
@@ -129,6 +132,18 @@ Set
         set /a "(22<<2)%3+9"        Evaluates to 10; prints to Standard Out
         set /a VarName="~16"        Evaluates to -17 (two's complement negation); stores value in VarName
         set /a VarName*=2           Multiplies the value of VarName by 2, then assigns VarName to the new value.
+
+    set "var=this value has spaces"
+        To set a variable value with spaces, it's best to place the quotes around the entire
+        assignment.
+
+    set var="this includes the quote makrs"
+        If we instead place the quotation marks around the variable value, it is stored with the
+        quotation marks included, which would later need to be escaped.
+
+    set var=this will create a bunch of variables
+        This will create one variable named 'var' assigned to value 'this', and then several empty
+        variables named 'will', 'create', 'a', 'bunch', 'of', and 'variables'.
 
 Setx
     -- Stores the variable in the registry:
