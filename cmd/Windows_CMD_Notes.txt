@@ -47,8 +47,10 @@ Core functions:
     cls     Clear the screen
     del     delete a file
     dir     see contents of directory
+            dir /s pattern searches recursively for file names matching "pattern" (e.g. *.py)
     echo    (see below)
-    findstr Print lines matching a pattern.  Like Unix grep
+    find    Find lines matching a string pattern (like Unix grep)
+    findstr More powerful version of 'find' with regex support.
     help    Get help (like Unix 'man')
     move    Moves files/folders to a new location
     ping    Test network connection
