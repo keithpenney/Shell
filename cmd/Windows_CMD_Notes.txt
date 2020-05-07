@@ -104,7 +104,7 @@ Environment Variables (envars)
     %VAR_NAME%      use the variable's value instead of the variable object itself
         e.g. echo %VAR_NAME%
 
-    %MyVar:c=d"     Replace all instances of character 'c' with character 'd' in
+    %MyVar:c=d%     Replace all instances of character 'c' with character 'd' in
                     the expansion of 'MyVar'
 
 Set
@@ -126,9 +126,6 @@ Set
         delete (unset) the variable VAR_NAME
         sometimes called "clobbering"
         
-    set VAR_NAME=cd ../
-        set VAR_NAME to a command. Then run the command with %VAR_NAME%
-
     set /a
         Arithmetic flag.  Evaluates the following expression.  Only works with ints.
         set /a "(22<<2)%3+9"        Evaluates to 10; prints to Standard Out
@@ -147,6 +144,9 @@ Set
         This will create one variable named 'var' assigned to value 'this', and then several empty
         variables named 'will', 'create', 'a', 'bunch', 'of', and 'variables'.
 
+    set "VAR_NAME=cd ../"
+        set VAR_NAME to a command. Then run the command with %VAR_NAME%
+
 Setx
     -- Stores the variable in the registry:
     --    User Variables: HKEY_CURRENT_USER\Environment
@@ -161,7 +161,6 @@ Setx
         
     setx VAR_NAME ""
         hide the variable VAR_NAME (will not display with 'Set' but will remain in the registry)
-
 
 If
     If /?   for help
@@ -205,7 +204,7 @@ Labels/GoTo
         GoTo :mylabel
 
 Command Arguments (in batch files):
-    %*      A string including all arguments (space-separated)
+    %*      A string including all arguments (space-separated) (not %0)
     %0      The command/filename called
     %1      The first argument
     %n      (where n is int between 1 and 9) the nth argument

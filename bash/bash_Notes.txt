@@ -169,7 +169,7 @@ Variables:
     a narrowed scope (e.g. inside a function or loop).
 
     myVar="A string"            Assign a value to a string variable
-    $myVar                      Retrieve the value of a variable
+    $myVar                      Retrieve the value of a variable (quotes removed during expansion)
     export myVar="A string"     Export the value of this variable to child processes (like making 'global')
 
 Arrays:
