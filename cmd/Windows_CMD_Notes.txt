@@ -260,3 +260,16 @@ Example - Serial Port Communication
     $port.WriteLine("hello world")
     $port.ReadExisting()
     $port.Close()
+
+Remote:
+  Establish an SSH session into a remote computer
+    ssh -l username remoteHostName
+  
+  Transfer a file from remote computer
+    scp username@remoteHostName:/path/to/source C:\path\to\destination
+  
+  Transfer a file to remote computer
+    scp C:\path\to\source username@remoteHostName:/path/to/destination
+    
+  Recursively transfer the contents of a directory from a remote computer
+    scp -r username@remoteHostName:/path/to/source/directory C:\path\to\destination\

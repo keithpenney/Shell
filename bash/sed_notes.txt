@@ -1,0 +1,104 @@
+sed (stream editor) notes.
+
+General:
+--------
+  Same fundamental syntax as vim - both came from 'ed'
+  sed is line-oriented - each command is applied to each line of the input stream
+
+  Execution:
+  ----------
+    sed 'COMMANDS' <INPUT >OUTPUT
+      Call sed with given sed commands COMMANDS line-by-line on input stream
+      INPUT outputing to stream OUTPUT
+
+  Delimiter:
+  ----------
+    /     Forward slash is default delimiter
+
+  Escape Character(s):
+  --------------------
+    \     Back slash is common escape character but can look ugly
+    _     Underscore can also be used as an escape character
+    :     Colon can be used as well
+    |     Vertical bar can be used too
+
+  sed Script:
+  -----------
+    Instead of passing commands to sed via the command line, you can place
+    the commands in a file (a sed script) and pass the file to sed at call
+    time with,
+      sed -f mySedScript <inputFile >outputFile
+
+    The contents of a sed script are a single sed command on each line with
+    optional comments (starting with #).
+
+Command-Line Flags:
+-------------------
+  -r      Enable extended regex support (-E on FreeBSD/MacOS)
+  -n      No printing.  Do not print unless explicitly told to with '/p' flag.
+  -e      Expression. For multiple sed commands, each can be issued following
+          the -e flag (i.e. -e 'CMD1' -e 'CMD2'). Long form --expression='CMD'
+  -f scpt Get commands from script file 'scpt' instead of from command line.
+
+Pattern Matching:
+-----------------
+  Regex Review:
+  -------------
+    [a-z]         Matches one lower-case character
+    [a-z]*        Matches zero or more lower-case characters
+    [a-z][a-z]*   Matches one or more lower-case characters
+    [a-z]+        Same as above but requires extended regex support (-r)
+    [^ ][^ ]*     Match anything other than a space
+    .             Matches any single character
+    ^             Matches the beginning of a line
+
+  Find Patterns:
+  --------------
+    sed -n '/PATTERN/p'
+      Find all instances of regex PATTERN and print them (like grep). Note
+      that without the '-n' flag, this would print any instance of PATTERN
+      twice and everything else just as it is in the input stream.
+
+  Recall Matched Pattern:
+  -----------------------
+    &             Entire matched pattern
+      When using the substitution command 's/old/new/', 'old' can be a regex.
+      When this is the case, the matched string can be retrieved with the &
+      character.
+
+    \1 \2 \3 ...  The first, second, third matched patterns (up to 9)
+      Surround a sub-pattern of your regex with escaped parentheses '\(\)'
+      or just parentheses '()' if extended regex supported; the patterns
+      matched by each group in order will be stored in \1 \2 \3 etc.
+
+Pattern Flags:
+--------------
+  sed has a number of pattern flags which can generally be appended to any sed
+  command after the last delimiter.  These include the following (delimiter
+  included for clarity):
+    /g        Global. Apply the command to each occurrence (default first only)
+    /1        Apply the command to the first occurrence (default).
+    /2        Apply the command to the second occurrence.
+              The occurrence flag can be any number from 1 to 512
+    /p        Print.  Used with '-n' flag to print a line.
+    /w file   Write a matched line to file 'file' (sed can open up to 10 files)
+    /I        Ignore case when matching (GNU sed only).
+
+  Pattern flags can be combined, but /w must be last ('cuz it needs an arg).
+
+Examples:
+---------
+  $ echo 'Last Tuesday I awoke in the middle of the day' | sed 's/day/night/g'
+  Last Tuesnight I awoke in the middle of the night
+
+  $ echo 'I like you' | sed 's/[Ll][a-z]*/"&-&"/'
+  I "like-like" you
+
+  $ echo 'home town' | sed -r 's/([a-z]+) ([a-z]+)/\2 \1/'
+  town home
+
+  $ sed 's/./&:/60' <myFile >myNewFile
+  # Adds a colon after the 60th character of each line of 'myFile'
+
+  $ sed -n '/PATTERN/ p' file
+  # Works like grep for pattern PATTERN
