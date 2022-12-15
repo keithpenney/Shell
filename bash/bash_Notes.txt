@@ -4,6 +4,7 @@ https://linuxconfig.org/bash-scripting-tutorial
 https://www.gnu.org/software/bash/manual/html_node/Builtin-Index.html#Builtin-Index
 
 General Notes:
+--------------
     Case insensitive
     Help:
         man [item/file/function name]
@@ -13,6 +14,7 @@ General Notes:
     Single and double quotes are NOT equivalent.  See 'quoting'
 
 Symbols and Characters:
+-----------------------
     #           A single-line comment
     #!          A shebang script
     $           Get the value of a variable
@@ -26,6 +28,7 @@ Symbols and Characters:
     :=          Test for unset/null before assignment.  See parameter expansion.
 
 Script Execution:
+-----------------
     Option 1.  Execute script by directly calling bash (or another compatible shell, e.g. 'sh')
         bash myScript.sh
     Option 2.  Make script executable and directly calling the script.
@@ -33,6 +36,7 @@ Script Execution:
         ./myScript.sh
 
 Execute Shell Commands with BASH:
+---------------------------------
     Some commands (like 'echo') will take almost any argument completely unevaluated.
     If we want to evaluate an argument (e.g. execute a shell command and use the output), we can wrap the command
     in backticks `` (under the tilde ~).
@@ -40,12 +44,14 @@ Execute Shell Commands with BASH:
     echo `uname -o`     Evaluates uname -o and echos the result to StdOut
 
 Reserved Keywords:
+------------------
     declare [-flag] var Declare variables and give them attributes.
                         -a: make var an indexed array; -A: make var an associative array
                         -i: make var an integer; -l: make var all lower-case; -u: make var all upper-case
     exec [command]      If a command is supplied, executes the command in a separate shell process.
                         If no command is supplied, redirections can be used to affect the current shell environment
     let name=val        Allows arithmetic to be performed on variables.
+    (( name = val ))    Another way to assign an arithmetic value to a variable
     local               Make a variable assignment local rather than global (as is default)
     $REPLY              The default variable for user input from 'read'
     read [flags] [var]  Prompt user for input stored in $var or $REPLY if no 'var' provided.
@@ -54,11 +60,13 @@ Reserved Keywords:
                         -e : uses Readline for input (allowing i.e. filename completion)
 
 Quoting:
+--------
     Single quotes '' preserve the literal value of ALL characters contained within.  No escape sequences.
     Double quotes "" preserve the literal value of all contained characters except $, `, \, *, and @
     Escape sequences are valid within strings quoted as $'string'.  The typical backslash '\' is the escape character.
 
 Expansion:
+----------
     Brace Expansion:
         Basically distribution and concatenation.  Ignores ${ as this is for parameter expansion.  Example:
             echo a{d,c,b}e      Yields: ade ace abe
@@ -131,6 +139,7 @@ Expansion:
         After all expansions, all unquoted occurences of \, ', and " are removed.
 
 Redirection:
+------------
     Redirecting Output:
         [n]>filename            # Redirect output from file descriptor 'n' to filename.
                                 # If 'filename' exists, its content is erased first.
@@ -165,6 +174,7 @@ Redirection:
             {varname}
 
 Variables:
+----------
     Variables are global by default.  Use the 'local' keyword to define a local variable within
     a narrowed scope (e.g. inside a function or loop).
 
@@ -173,6 +183,7 @@ Variables:
     export myVar="A string"     Export the value of this variable to child processes (like making 'global')
 
 Arrays:
+-------
     Define an array:
         someArray=('Thing 1' 'Thing 2' 'Thing 3')
 
@@ -188,6 +199,7 @@ Arrays:
                                 [@] Get all elements
 
 Symbolic Operators:
+-------------------
     Arithmetic:
         x++, x--            # Post increment and decrement
         ++x, --x            # Pre increment and decrement
@@ -218,6 +230,7 @@ Symbolic Operators:
         <<=, >>=, &=, |=, ^=    # Bitwise operator assignment.
 
 Conditional Expressions:
+------------------------
     Anything inside double brackets [[ ]] is treated as conditional expression.
     Such an expression is evaluated for truth and the expression inside the brackets
     is replaced with the evaluated truthiness.  These operators can be any of the
@@ -230,6 +243,7 @@ Conditional Expressions:
         [[ $foo == "a*" ]]  # True only if variable 'foo' is exactly 'a*'
 
 Base Representation:
+--------------------
     Hexadecimal:
         0xNNNN              # A hexidecimal number where 'NNNN' are digits between 0 and F.  Can also use capital 'X'
     Octal:
@@ -238,6 +252,7 @@ Base Representation:
         [2#]NNNN            # A binary number where 'NNNN' are digits of either 0 or 1.
 
 User-Defined Functions:
+-----------------------
     User-defined functions work exactly like built-in shell functions.
     They are defined using one of two possible syntax options.
 
@@ -257,7 +272,16 @@ User-Defined Functions:
     Function Example:
         ...
 
+Chaining Multiple Expressions:
+------------------------------
+    In an interactive shell environment, sometimes you want to give several commands at once and let them execute one
+    after the other (instead of writing a script or waiting for each to complete).  To do this, we simply separate the
+    commands with the character(s) below, depending on intended result.
+    ;       Execute the commands regardless of outcome.
+    &&      Execute the second command only if the first one is successful
+
 Flow Control and Conditional Statements:
+----------------------------------------
     If-statement:
         If statements begin with keyword 'if' and end with keyword 'fi'
         They can include an else-if ('elif') condition and an else condition.
@@ -284,14 +308,113 @@ Flow Control and Conditional Statements:
                 # do stuff with 'item'
             done
 
-Chaining Multiple Expressions:
-    In an interactive shell environment, sometimes you want to give several commands at once and let them execute one
-    after the other (instead of writing a script or waiting for each to complete).  To do this, we simply separate the
-    commands with the character(s) below, depending on intended result.
-    ;       Execute the commands regardless of outcome.
-    &&      Execute the second command only if the first one is successful
+    Tests and Conditional Statements:
+    ---------------------------------
+      The command 'test' does the same as surrounding the statement in square brackets [ ] (and
+      whitespace).  The result of 'test' is boolean - used wherever conditionals are required.
+      There are alternate syntaxes for string comparison and arithmetic evaluation which don't
+      require escaping grouping characters or operators.
+
+      There are two additional commands which have more specific uses:
+        [[ ]]   // String comparison, system tests
+        (( ))   // Arithmetic evaluation
+      These don't require escaping control characters the way test or [] does, but their results
+      can be tricky if used improperly (often can fail silently or yield evaluation result that
+      is technically correct, but probably not what the author intended).  A good example of this
+      is shown as a 'GOTCHA' below where numeric values are unitentionally compared as strings.
+
+      String Comparison:
+      ------------------
+        // Operators: -eq, -ne, -gt, -lt, -ge, -le
+        //              =,  !=,  \>,  \<, \>=, \<=
+        test "abc" = "abc"  && echo True || echo False      // True
+        test "abc" = "def"  && echo True || echo False      // False
+        [ "abc" = "def" ]   && echo True || echo False      // False
+        [[ "abc" = "def" ]] && echo True || echo False      // False
+        [[ "abc" == "def" ]] && echo True || echo False      // False
+        [ "abc" != "def" ]  && echo True || echo False      // True
+        [ "abc" \> "ab" ]   && echo True || echo False      // True   (note the escape of '>')
+        [[ "abc" > "ab" ]]  && echo True || echo False      // True   (note the escape of '>')
+        [[ "abc" > "de" ]]  && echo True || echo False      // False  (recall string comparison)
+        [[ "abc" < "ABC" ]] && echo True || echo False      // False  (recall string comparison)
+        [ -z "abc" ]        && echo True || echo False      // False (-z tests for null string)
+        [ -z "" ]           && echo True || echo False      // True  (-z tests for null string)
+
+        // GOTCHA! Unescaped '>' in [] evaluates as redirection
+        [ "abc" > "def" ]   && echo True || echo False      // True (INCORRECT!)
+        [ "abc" \> "def" ]  && echo True || echo False      // False (correct)
+        [[ "abc" > "def" ]] && echo True || echo False      // False (correct)
+
+        // Pattern matching with glob strings.  Note, patterns should only be used with
+        // '==' and '!=' operators.  Make sure not to put quotes around the pattern string.
+
+      Arithmetic Evaluation:
+      ----------------------
+        // Operators: -eq, -ne, -gt, -lt, -ge, -le
+        //              =,  !=,  \>,  \<, \>=, \<=
+        test 3 = 3          && echo True || echo False      // True
+        test 3 -eq 3        && echo True || echo False      // True
+        [ 5 \> 3 ]          && echo True || echo False      // True   (note escape of '>')
+        (( 5 > 13 ))        && echo True || echo False      // False  (no escape of '>')
+        [ 5 -gt 3 ]         && echo True || echo False      // True   (-gt alias for \>)
+        [ 10 -eq 100 ]      && echo True || echo False      // False  (-eq alias for =)
+
+        // GOTCHA! [[]] compares as strings!!
+        [[ 5 > 13 ]]        && echo True || echo False      // True
+        (( 5 > 13 ))        && echo True || echo False      // False
+
+        // The (( )) command evaluates the contents as a C-like arithmetic expression
+        // and sets the system exit value ($?) to 1 if the expression evaluates to 0
+        // or to 0 if it evaluates as non-zero
+        // Operators: +, -, ++, --, ==, !=, >, <, ~, &, |, ^
+        (( 3 == 4 )); echo $?                               // 1
+        (( 3 + 4 ));  echo $?                               // 0
+        (( 3 - 3 ));  echo $?                               // 1
+
+        // You can perform math an assign to variables within (( )).  These assignments
+        // persist in the shell session
+        (( x = 4 )); echo $? $x                             // 0 4
+        (( x = 4*4 ^ 1 )); echo $x                          // 17
+
+        // You can chain expressions and use hexadecimal numbers as well
+        (( (x = 10) && (y=2) && (z = (x*y) & 0xF) )); echo $x $y $z // 10 2 4
+
+      System Tests:
+      -------------
+        [ -e "foo" ]        // Test if file/directory "foo" exists
+        [ -a "foo" ]        // (alias for '-e')
+        [[ (-e "foo") && (-e "bar") ]] // Test if both "foo" and "bar" exist (without escaping)
+        [ -d "foo" ]        // Test if "foo" is a directory
+        test -f "foo"       // Test if file "foo" is a regular file (false for directories, links)
+        test -h "foo"       // Test if file "foo" is a symbolic link
+        test -L "foo"       // (alias for '-h')
+        [ -p "foo" ]        // Test if "foo" is a named pipe
+        [ -r "foo" ]        // Test if "foo" is readable by you (current user)
+        [ -w "foo" ]        // Test if "foo" is writable by you (current user)
+        test -s "foo"       // Test if "foo" is not empty
+        test -S "foo"       // Test if "foo" is a socket
+        test -N "foo"       // Test if "foo" has been modified since last being read
+        [ "foo" -nt "bar" ] // Test if file "foo" is newer than file "bar"
+        [ "foo" -ot "bar" ] // Test if file "foo" is older than file "bar"
+        [ "foo" -ef "bar" ] // Test if file "foo" a hard link to file "bar"
+
+      Combining Conditionals:
+      -----------------------
+        The '-a' and '-o' operators allow you to combine conditional expressions in logical
+        AND or logical OR respectively.  The unary '!' operator negates the logical value.
+        Recall grouping requires escaping or quoting (weird) parentheses.
+        test "a" = "a" -a 3 -gt 2 && echo True || echo False  // True
+        test "a" = "a" -a 3 -gt 5 && echo True || echo False  // False
+        [ "a" = "a" -o 3 -gt 5 ]  && echo True || echo False  // True
+        [ "a" = "b" -o 3 -gt 5 ]  && echo True || echo False  // False
+        [ ! \( "a" = "b" -o 3 -gt 5  \) ]  && echo True || echo False  // True
+        [ ! '(' "a" = "b" -o 3 -gt 5  ')' ]  && echo True || echo False  // True
+        // Note how unwieldy this 'test' or [] syntax gets
+        // We can simplify with [[]] syntax (note the || operator instead of '-o')
+        [[ ! ("a" = "b" || 3 -gt 5) ]]  && echo True || echo False  // True
 
 Signals and Traps:
+------------------
     When a C program terminates, it typically returns an integer indicating something about how/why it terminated.
     Returning zero '0' means all is well.  A full list of values can be obtained via:
         man 7 signal
