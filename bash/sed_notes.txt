@@ -39,6 +39,8 @@ Command-Line Flags:
   -e      Expression. For multiple sed commands, each can be issued following
           the -e flag (i.e. -e 'CMD1' -e 'CMD2'). Long form --expression='CMD'
   -f scpt Get commands from script file 'scpt' instead of from command line.
+  -z      Treat input as a set of null-terminated strings. Necessary for
+          matching with newline characters (see example below).
 
 Pattern Matching:
 -----------------
@@ -102,3 +104,7 @@ Examples:
 
   $ sed -n '/PATTERN/ p' file
   # Works like grep for pattern PATTERN
+
+  $ echo -e "test\nme" | sed -z -e 's/[\n]/ /'
+  test me
+  # Without the '-z' flag, sed does not recognize newlines

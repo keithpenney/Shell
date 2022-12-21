@@ -19,6 +19,7 @@ Symbols and Characters:
     #!          A shebang script
     $           Get the value of a variable
     ${}         Get the value of an expression within the braces (e.g. ${array[2]}
+    $()         Evaluate the expression within the parentheses
     =           Variable assignment
     $N          The Nth argument passed to a script
     $@          All arguments passed to a script
@@ -39,9 +40,9 @@ Execute Shell Commands with BASH:
 ---------------------------------
     Some commands (like 'echo') will take almost any argument completely unevaluated.
     If we want to evaluate an argument (e.g. execute a shell command and use the output), we can wrap the command
-    in backticks `` (under the tilde ~).
+    in $() (a deprecated alternative is backticks ``).
 
-    echo `uname -o`     Evaluates uname -o and echos the result to StdOut
+    echo $(uname -o)    Evaluates uname -o and echos the result to StdOut
 
 Reserved Keywords:
 ------------------
