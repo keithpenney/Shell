@@ -161,6 +161,8 @@ Redirection:
         >&filename              # Direct StdOut to both the screen (default) and to filename
         [n]<&[m]-               # Move 'm' to 'n'.Copies file descriptor 'm' to file descriptor 'n' then deletes 'm'
         [n]<>filename           # Open file descriptor 'n' for reading and writing.
+    Redirection and Piping:
+        2>&1 |                  # Redirect stderr to stdout and pipe
 
     File Descriptor:
         A UNIX concept.  A file descriptor is a non-negative integer used as an abstract handle to access a file or
