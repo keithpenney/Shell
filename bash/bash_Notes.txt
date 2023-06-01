@@ -342,6 +342,7 @@ Flow Control and Conditional Statements:
         [[ "abc" < "ABC" ]] && echo True || echo False      // False  (recall string comparison)
         [ -z "abc" ]        && echo True || echo False      // False (-z tests for null string)
         [ -z "" ]           && echo True || echo False      // True  (-z tests for null string)
+        [ -n "" ]           && echo True || echo False      // False (-n tests for non-null string)
 
         // GOTCHA! Unescaped '>' in [] evaluates as redirection
         [ "abc" > "def" ]   && echo True || echo False      // True (INCORRECT!)
